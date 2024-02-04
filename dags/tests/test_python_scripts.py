@@ -4,11 +4,8 @@ import unittest
 
 class TestScripts(unittest.TestCase):
 
-    def test_first_script(self):
+    def test_extract_userdata(self):
         self.assertEqual(5, 5)
-
-    def test_second_script(self):
-        self.assertEqual('AHOY!', 'AHOY!')
 
 if __name__ == '__main__':
     unittest.main()

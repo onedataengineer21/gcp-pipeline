@@ -1,17 +1,46 @@
 import requests
-import datetime
 import random
 import pandas as pd
 
-def extract_app_users_data(filename: str, foldername: str) -> str:
+def extract_app_users_data() -> dataframe:
     url = f'http://randomuser.me/api?results={random.randint(40,80)}&nat=us,gb,in,es,ca,au'
     result = requests.get(url)
     result.raise_for_status()   # raise an exception if bad response returned
     data = result.json()
     users = pd.json_normalize(data["results"], max_level=1)
-    users = users[["gender","email","phone","name.title","name.first","name.last", "location.city","location.state","location.country", "dob.date", "dob.age"]]
-    users.columns = ["Gender", "Email", "Phone", "Title", "First_Name", "Last_Name", "City", "State", "Country", "DOB", "Age"]
-    users = users[["Title", "First_Name", "Last_Name", "Gender", "DOB", "Age", "Email", "Phone", "City", "State", "Country"]]
-    users.to_parquet(f'gs://api-composer-gcs-app-user-data/dt={foldername}/{filename}')
-    return f'We downloaded {len(users)} users data!'
+    return users
 
+def transform(data : dataframe) -> dataframe:
+    """
+    Selecting only the required columns from the source, renaming the columns and ordering the columns
+    """
+    data = data[["gender","email","phone","name.title","name.first","name.last", "location.city","location.state","location.country", "dob.date", "dob.age"]]
+    data.columns = ["Gender", "Email", "Phone", "Title", "First_Name", "Last_Name", "City", "State", "Country", "DOB", "Age"]
+    data = data[["Title", "First_Name", "Last_Name", "Gender", "DOB", "Age", "Email", "Phone", "City", "State", "Country"]]
+    return data
+
+def load_data_storage(data : dataframe) -> None:
+    """
+    Writing the dataset to the cloud storage in the parquet format
+    """
+    data.to_parquet(f'gs://api-composer-gcs-app-user-data/dt={foldername}/{filename}')
+    return None
+
+def app(filename: str, foldername: str) -> None
+    """
+    This is the main method in the job which calls the modules for completing the job
+    """
+    try:
+        ### Extracting the dataset from the API
+        data = extract_app_users_data()
+
+        ### Transforming the dataset
+        transformed = transform(data)
+
+        ### Loading the dataset to storage in parquet format
+        load_data_storage(transformed)
+
+    except Exception as e:
+            print(f"ERROR IN THE USER DATA EXTRACTION JOB: {e}")
+
+    return None

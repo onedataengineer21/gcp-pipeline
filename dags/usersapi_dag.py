@@ -34,7 +34,7 @@ dag = DAG(
 
 t_extract_app_users_data = PythonOperator(
     task_id="extract_app_users_data",
-    python_callable=extract_userdata.extract_app_users_data,
+    python_callable=extract_userdata.app,
     op_kwargs={"filename": filename, "foldername": foldername},
     dag=dag,
 )

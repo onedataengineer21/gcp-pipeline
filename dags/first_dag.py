@@ -19,7 +19,7 @@ default_args = {
 
 dag = DAG(
     'first_dag',
-    schedule_interval="0 0 * * *",   # run every day at midnight UTC
+    schedule_interval="*/2 * * * *",   # run every day at midnight UTC
     max_active_runs=1,
     catchup=False,
     default_args=default_args

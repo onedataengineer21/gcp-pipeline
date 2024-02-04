@@ -2,7 +2,7 @@ from airflow import DAG
 from airflow.operators.bash_operator import BashOperator
 from airflow.operators.python_operator import PythonOperator
 from python_scripts import extract_userdata
-import datatime
+import datetime
 
 # Get the current date and time
 current_datetime = datetime.datetime.now()

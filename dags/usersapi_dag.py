@@ -20,7 +20,7 @@ default_args = {
     'email_on_retry': False,
     'retries': 1,
     'retry_delay': datetime.timedelta(seconds=30),
-    'start_date': datetime.datetime(2024, 02, 04),
+    'start_date': datetime.datetime(2024, 2, 4),
 }
 
 dag = DAG(

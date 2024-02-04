@@ -9,8 +9,9 @@ current_datetime = datetime.datetime.now()
 # Format the date and time in YYYYMMDDHHMMSS format
 foldername = current_datetime.strftime('%Y%m%d')
 filetimestamp = current_datetime.strftime('%Y%m%d%H%M%S')
+
+## Setting the path and file name
 filename = f'{filetimestamp}.parquet'
-filepath = f'/home/airflow/gcs/data/{filename}'
 
 default_args = {
     'owner': 'OneDataEngineer',
@@ -44,7 +45,6 @@ t_print_message = BashOperator(
     bash_command='echo "Users data has been downloaded. Congrats!!!!!!!"',
     dag=dag
 )
-
 
 # Setting the first task as a dependency for the second task.
 t_print_message.set_upstream(t_extract_app_users_data)

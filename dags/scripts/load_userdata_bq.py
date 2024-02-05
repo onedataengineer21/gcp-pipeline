@@ -39,13 +39,13 @@ def load_data_bq(data):
             bigquery.SchemaField("First_Name", bigquery.enums.SqlTypeNames.STRING),
             bigquery.SchemaField("Last_Name", bigquery.enums.SqlTypeNames.STRING),
             bigquery.SchemaField("Gender", bigquery.enums.SqlTypeNames.STRING),
-            bigquery.SchemaField("DOB", bigquery.enums.SqlTypeNames.TIMESTAMP),
-            bigquery.SchemaField("Age", bigquery.enums.SqlTypeNames.INTEGER),
+            bigquery.SchemaField("DOB", bigquery.enums.SqlTypeNames.STRING),
+            bigquery.SchemaField("Age", bigquery.enums.SqlTypeNames.STRING),
             bigquery.SchemaField("Email", bigquery.enums.SqlTypeNames.STRING),
             bigquery.SchemaField("Phone", bigquery.enums.SqlTypeNames.STRING),
-            bigquery.SchemaField("City", bigquery.enums.SqlTypeNames.GEOGRAPHY),
-            bigquery.SchemaField("State", bigquery.enums.SqlTypeNames.GEOGRAPHY),
-            bigquery.SchemaField("Country", bigquery.enums.SqlTypeNames.GEOGRAPHY),
+            bigquery.SchemaField("City", bigquery.enums.SqlTypeNames.STRING),
+            bigquery.SchemaField("State", bigquery.enums.SqlTypeNames.STRING),
+            bigquery.SchemaField("Country", bigquery.enums.SqlTypeNames.STRING),
         ]
     )
 
@@ -73,11 +73,13 @@ def app() -> None:
 
         ### Transforming the dataset
         transformed = transform(data)
+        transformed = transformed.astype('str')
 
         ### Loading the dataset to storage in parquet format
         load_data_bq(transformed)
 
     except Exception as e:
             print(f"ERROR IN THE USER DATA EXTRACTION JOB: {e}")
+            return -1
 
     return None

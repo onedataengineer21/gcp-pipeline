@@ -24,6 +24,13 @@ def transform(data):
     print("transform completed")
     return data
 
+def load_data_storage(data, foldername, filename):
+    """
+    Writing the dataset to the cloud storage in the parquet format
+    """
+    data.to_parquet(f'gs://api-composer-gcs-app-user-data/dt={foldername}/{filename}')
+    return None
+
 def load_data_bq(data):
     """
     Writing the dataset to the cloud storage in the parquet format
@@ -63,7 +70,7 @@ def load_data_bq(data):
     print("load_data_bq completed")
     return None
 
-def app():
+def app(filename, foldername):
     """
     This is the main method in the job which calls the modules for completing the job
     """
@@ -74,6 +81,9 @@ def app():
         ### Transforming the dataset
         transformed = transform(data)
         transformed = transformed.astype('str')
+
+        ### Loading the dataset to storage in parquet format
+        load_data_storage(transformed, foldername, filename)
 
         ### Loading the dataset to bq
         load_data_bq(transformed)

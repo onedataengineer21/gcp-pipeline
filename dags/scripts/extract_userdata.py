@@ -26,7 +26,7 @@ def load_data_storage(data : dataframe) -> None:
     data.to_parquet(f'gs://api-composer-gcs-app-user-data/dt={foldername}/{filename}')
     return None
 
-def app(filename: str, foldername: str) -> None
+def app(filename: str, foldername: str) -> None:
     """
     This is the main method in the job which calls the modules for completing the job
     """

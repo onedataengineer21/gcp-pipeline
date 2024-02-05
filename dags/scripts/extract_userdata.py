@@ -26,7 +26,7 @@ def load_data_storage(data, foldername, filename):
     data.to_parquet(f'gs://api-composer-gcs-app-user-data/dt={foldername}/{filename}')
     return None
 
-def app(filename: str, foldername: str) -> None:
+def app(filename, foldername):
     """
     This is the main method in the job which calls the modules for completing the job
     """
@@ -42,5 +42,6 @@ def app(filename: str, foldername: str) -> None:
 
     except Exception as e:
             print(f"ERROR IN THE USER DATA EXTRACTION JOB: {e}")
+            return -1
 
     return None

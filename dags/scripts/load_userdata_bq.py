@@ -63,7 +63,7 @@ def load_data_bq(data):
     print("load_data_bq completed")
     return None
 
-def app() -> None:
+def app():
     """
     This is the main method in the job which calls the modules for completing the job
     """

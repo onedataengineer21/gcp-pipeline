@@ -1,7 +1,7 @@
 from airflow import DAG
 from airflow.operators.bash_operator import BashOperator
 from airflow.operators.python_operator import PythonOperator
-from scripts import extract_userdata
+from scripts import load_userdata_gcs
 import datetime
 
 # Get the current date and time
@@ -34,7 +34,7 @@ dag = DAG(
 
 t_extract_app_users_data = PythonOperator(
     task_id="extract_app_users_data",
-    python_callable=extract_userdata.app,
+    python_callable=load_userdata_gcs.app,
     op_kwargs={"filename": filename, "foldername": foldername},
     dag=dag,
 )

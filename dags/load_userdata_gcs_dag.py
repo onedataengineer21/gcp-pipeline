@@ -1,7 +1,7 @@
 from airflow import DAG
 from airflow.operators.bash_operator import BashOperator
 from airflow.operators.python_operator import PythonOperator
-from scripts import load_userdata_gcs
+from scripts.userdata_gcs import load_userdata_gcs
 import datetime
 
 # Get the current date and time
@@ -26,7 +26,7 @@ default_args = {
 
 dag = DAG(
     'load_userdata_gcs',
-    schedule_interval="*/10 * * * *",   # run every 2 minutes
+    schedule_interval="*/2 * * * *",   # run every 2 minutes
     max_active_runs=1,
     catchup=False,
     default_args=default_args

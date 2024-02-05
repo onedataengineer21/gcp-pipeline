@@ -19,7 +19,7 @@ def transform(data):
     data = data[["Title", "First_Name", "Last_Name", "Gender", "DOB", "Age", "Email", "Phone", "City", "State", "Country"]]
     return data
 
-def load_data_storage(data):
+def load_data_storage(data, foldername, filename):
     """
     Writing the dataset to the cloud storage in the parquet format
     """
@@ -38,7 +38,7 @@ def app(filename: str, foldername: str) -> None:
         transformed = transform(data)
 
         ### Loading the dataset to storage in parquet format
-        load_data_storage(transformed)
+        load_data_storage(transformed, foldername, filename)
 
     except Exception as e:
             print(f"ERROR IN THE USER DATA EXTRACTION JOB: {e}")

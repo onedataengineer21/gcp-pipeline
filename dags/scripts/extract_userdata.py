@@ -2,7 +2,7 @@ import requests
 import random
 import pandas as pd
 
-def extract_app_users_data() -> dataframe:
+def extract_app_users_data():
     url = f'http://randomuser.me/api?results={random.randint(40,80)}&nat=us,gb,in,es,ca,au'
     result = requests.get(url)
     result.raise_for_status()   # raise an exception if bad response returned
@@ -10,7 +10,7 @@ def extract_app_users_data() -> dataframe:
     users = pd.json_normalize(data["results"], max_level=1)
     return users
 
-def transform(data : dataframe) -> dataframe:
+def transform(data):
     """
     Selecting only the required columns from the source, renaming the columns and ordering the columns
     """
@@ -19,7 +19,7 @@ def transform(data : dataframe) -> dataframe:
     data = data[["Title", "First_Name", "Last_Name", "Gender", "DOB", "Age", "Email", "Phone", "City", "State", "Country"]]
     return data
 
-def load_data_storage(data : dataframe) -> None:
+def load_data_storage(data):
     """
     Writing the dataset to the cloud storage in the parquet format
     """

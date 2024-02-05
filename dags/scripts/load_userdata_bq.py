@@ -11,6 +11,7 @@ def extract_app_users_data():
     result.raise_for_status()   # raise an exception if bad response returned
     data = result.json()
     users = pd.json_normalize(data["results"], max_level=1)
+    print("extract_app_users_data completed")
     return users
 
 def transform(data):
@@ -20,6 +21,7 @@ def transform(data):
     data = data[["gender","email","phone","name.title","name.first","name.last", "location.city","location.state","location.country", "dob.date", "dob.age"]]
     data.columns = ["Gender", "Email", "Phone", "Title", "First_Name", "Last_Name", "City", "State", "Country", "DOB", "Age"]
     data = data[["Title", "First_Name", "Last_Name", "Gender", "DOB", "Age", "Email", "Phone", "City", "State", "Country"]]
+    print("transform completed")
     return data
 
 def load_data_bq(data):
@@ -58,6 +60,7 @@ def load_data_bq(data):
             table.num_rows, len(table.schema), table_id
         )
     )
+    print("load_data_bq completed")
     return None
 
 def app() -> None:

@@ -25,8 +25,8 @@ default_args = {
 }
 
 dag = DAG(
-    'usersapi',
-    schedule_interval="*/10 * * * *",   # run every 2 minutes
+    'load_userdata_gcs',
+    schedule_interval="*/2 * * * *",   # run every 2 minutes
     max_active_runs=1,
     catchup=False,
     default_args=default_args

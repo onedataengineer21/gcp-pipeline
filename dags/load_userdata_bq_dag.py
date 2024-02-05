@@ -1,7 +1,7 @@
 from airflow import DAG
 from airflow.operators.bash_operator import BashOperator
 from airflow.operators.python_operator import PythonOperator
-from scripts import load_userdata_bq
+from scripts.userdata_bq import load_userdata_bq
 import datetime
 
 # Get the current date and time

@@ -1,0 +1,9 @@
+# configs/pipeline.yaml
+api_settings:
+  api_path: 'http://randomuser.me/api'
+
+gcs_settings:
+  gcs_bucket_name: 'gs://api-composer-gcs-app-user-data/'
+
+bq_settings:
+  bq_table_id: 'ecommerce_users_data.users_data'

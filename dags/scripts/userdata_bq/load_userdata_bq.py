@@ -35,14 +35,14 @@ def transform(data):
     print("transform completed")
     return data
 
-def load_data_bq(data):
+def load_data_bq(data, config):
     """
     Writing the dataset to the cloud storage in the parquet format
     """
     # Construct a BigQuery client object.
     client = bigquery.Client()
 
-    table_id = "ecommerce_users_data.users_data"
+    table_id = config['bq_settings']['bq_table_id']
 
     job_config = bigquery.LoadJobConfig(
         schema=[
@@ -89,7 +89,7 @@ def app():
         transformed = transformed.astype('str')
 
         ### Loading the dataset to bq
-        load_data_bq(transformed)
+        load_data_bq(transformed, config)
 
     except Exception as e:
             print(f"ERROR IN THE USER DATA EXTRACTION JOB: {e}")

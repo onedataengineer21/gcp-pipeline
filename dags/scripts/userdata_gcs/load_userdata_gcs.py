@@ -31,11 +31,12 @@ def transform(data):
     data = data[["Title", "First_Name", "Last_Name", "Gender", "DOB", "Age", "Email", "Phone", "City", "State", "Country"]]
     return data
 
-def load_data_storage(data, foldername, filename):
+def load_data_storage(data, config, foldername, filename):
     """
     Writing the dataset to the cloud storage in the parquet format
     """
-    data.to_parquet(f'gs://api-composer-gcs-app-user-data/dt={foldername}/{filename}')
+    bucketname = config['gcs_settings']['gcs_bucket_name']
+    data.to_parquet(f'{bucketname}/dt={foldername}/{filename}')
     return None
 
 def app(filename, foldername):
@@ -52,7 +53,7 @@ def app(filename, foldername):
         transformed = transform(data)
 
         ### Loading the dataset to storage in parquet format
-        load_data_storage(transformed, foldername, filename)
+        load_data_storage(transformed, config, foldername, filename)
 
     except Exception as e:
             print(f"ERROR IN THE USER DATA EXTRACTION JOB: {e}")

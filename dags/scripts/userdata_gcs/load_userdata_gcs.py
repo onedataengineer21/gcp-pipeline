@@ -3,7 +3,7 @@ import random
 import pandas as pd
 import yaml
 
-def load_config(config_path='configs/pipeline.yaml'):
+def load_config(config_path='https://raw.githubusercontent.com/onedataengineer21/gcp-pipeline/main/configs/pipeline.yaml'):
     """Load the pipeline configuration from a YAML file."""
     with open(config_path, 'r') as file:
         config = yaml.safe_load(file)

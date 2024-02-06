@@ -4,21 +4,14 @@ import pytz
 import requests
 import random
 import pandas as pd
-import yaml
 
-def load_config(config_path='configs/pipeline.yaml'):
-    """Load the pipeline configuration from a YAML file."""
-    with open(config_path, 'r') as file:
-        config = yaml.safe_load(file)
-    return config
-
-def extract_app_users_data(config):
+def extract_app_users_data():
     """
     Pulling randomuser information using the API
     With each call, we try to pull only 40-80 records randomly.
     """
-    url = config['api_settings']['api_path']
-    result = requests.get(f'{url}?results={random.randint(40,80)}&nat=us,gb,in,es,ca,au')
+    url = f'http://randomuser.me/api?results={random.randint(40,80)}&nat=us,gb,in,es,ca,au'
+    result = requests.get(url)
     result.raise_for_status()   # raise an exception if bad response returned
     data = result.json()
     users = pd.json_normalize(data["results"], max_level=1)
@@ -35,12 +28,11 @@ def transform(data):
     print("transform completed")
     return data
 
-def load_data_storage(data, config, foldername, filename):
+def load_data_storage(data, foldername, filename):
     """
     Writing the dataset to the cloud storage in the parquet format
     """
-    bucketname = config['gcs_settings']['gcs_bucket_name']
-    data.to_parquet(f'{bucketname}/dt={foldername}/{filename}')
+    data.to_parquet(f'gs://api-composer-gcs-app-user-data/dt={foldername}/{filename}')
     return None
 
 def load_data_bq(data):
@@ -50,7 +42,7 @@ def load_data_bq(data):
     # Construct a BigQuery client object.
     client = bigquery.Client()
 
-    table_id = config['bq_settings']['bq_table_id']
+    table_id = "ecommerce_users_data.users_data"
 
     job_config = bigquery.LoadJobConfig(
         schema=[
@@ -87,20 +79,18 @@ def app(filename, foldername):
     This is the main method in the job which calls the modules for completing the job
     """
     try:
-        config = load_config()
-
         ### Extracting the dataset from the API
-        data = extract_app_users_data(config)
+        data = extract_app_users_data()
 
         ### Transforming the dataset
         transformed = transform(data)
         transformed = transformed.astype('str')
 
         ### Loading the dataset to storage in parquet format
-        load_data_storage(transformed, config, foldername, filename)
+        load_data_storage(transformed, foldername, filename)
 
         ### Loading the dataset to bq
-        load_data_bq(transformed, config)
+        load_data_bq(transformed)
 
     except Exception as e:
             print(f"ERROR IN THE USER DATA EXTRACTION JOB: {e}")

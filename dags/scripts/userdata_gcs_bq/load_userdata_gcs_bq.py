@@ -6,10 +6,6 @@ import random
 import pandas as pd
 
 def extract_app_users_data():
-    """
-    Pulling randomuser information using the API
-    With each call, we try to pull only 40-80 records randomly.
-    """
     url = f'http://randomuser.me/api?results={random.randint(40,80)}&nat=us,gb,in,es,ca,au'
     result = requests.get(url)
     result.raise_for_status()   # raise an exception if bad response returned

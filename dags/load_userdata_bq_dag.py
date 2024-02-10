@@ -26,7 +26,7 @@ default_args = {
 
 dag = DAG(
     'load_userdata_bq',
-    schedule_interval="*/15 * * * *",   # run every 2 minutes
+    schedule_interval="0 */24 * * *",   # run every 2 minutes
     max_active_runs=1,
     catchup=False,
     default_args=default_args
